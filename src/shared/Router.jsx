@@ -4,6 +4,8 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import SignUp from "../pages/SignUp";
 import Header from "../components/Header";
+import Quiz from "../pages/Quiz";
+import WrongAnswers from "../pages/WrongAnswers";
 
 const Router = () => {
     return (
@@ -13,6 +15,9 @@ const Router = () => {
                 <Route path='/' element={<Home />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/signUp' element={<SignUp />} />
+                <Route path='/quiz' element={<Quiz />} />
+                <Route path='/wrongAnswers' element={<WrongAnswers />} />
+
             </Routes>
         </BrowserRouter>
     )

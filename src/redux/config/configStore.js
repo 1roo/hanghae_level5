@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import todos from "../modules/todos";
+import arithmeticQuiz from "../modules/arithmeticQuiz";
 
 
 const store = configureStore({
     reducer: {
-        todos,
+        quiz: arithmeticQuiz,
     }
 })
 

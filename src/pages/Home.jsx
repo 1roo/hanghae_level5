@@ -22,11 +22,15 @@ const Home = () => {
         <div>
           <h1>무엇을 할까요?</h1>
           <StyledDiv
-            onClick={() => { }}
-          >할 일 기록하기<FaArrowCircleRight size={24} color="#191970"/></StyledDiv>
+            onClick={() => {
+              navigate("/quiz");
+            }}
+          >문제 풀기<FaArrowCircleRight size={24} color="#191970"/></StyledDiv>
           <StyledDiv
-            onClick={() => { }}
-          >TODO LIST<FaArrowCircleRight size={24} color="#191970"/></StyledDiv>
+            onClick={() => {
+              navigate("/wrongAnswers");
+            }}
+          >오답노트<FaArrowCircleRight size={24} color="#191970"/></StyledDiv>
         </div>
       </div>
 
