@@ -6,17 +6,19 @@ import SignUp from "../pages/SignUp";
 import Header from "../components/Header";
 import Quiz from "../pages/Quiz";
 import WrongAnswers from "../pages/WrongAnswers";
+import WrongAnswerDetail from "../pages/WrongAnswerDetail";
 
 const Router = () => {
     return (
         <BrowserRouter>
-        <Header />
+            <Header />
             <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/signUp' element={<SignUp />} />
                 <Route path='/quiz' element={<Quiz />} />
                 <Route path='/wrongAnswers' element={<WrongAnswers />} />
+                <Route path="/wrongAnswers/:id" element={<WrongAnswerDetail />} />
 
             </Routes>
         </BrowserRouter>

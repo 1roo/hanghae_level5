@@ -3,25 +3,16 @@ import { useNavigate } from "react-router";
 import Cookies from "universal-cookie";
 import { IoIosHome } from "react-icons/io";
 import styled from "styled-components";
+import useAuth from "../hooks/useAuth";
 
 const Header = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const cookie = new Cookies();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const token = cookie.get("accessToken");
-        if (token) {
-            setIsLoggedIn(true);
-        } else {
-            setIsLoggedIn(false);
-        }
-    }, [cookie]);
 
     const handleLogout = () => {
         cookie.remove("accessToken");
         cookie.remove("id");
-        setIsLoggedIn(false);
         window.alert('로그아웃 완료');
         navigate("/login");
     };
@@ -30,8 +21,8 @@ const Header = () => {
     return (
         <Container>
             <StyledHeader>
-                <IoIosHome size={24} style={{cursor: 'pointer'}} onClick={() => { navigate("/") }} />
-                {isLoggedIn && (
+                <IoIosHome size={24} style={{ cursor: 'pointer' }} onClick={() => { navigate("/") }} />
+                {cookie.get("accessToken") && (
                     <StyledSpan onClick={() => { handleLogout(); }}>
                         로그아웃</StyledSpan>
                 )}

@@ -1,39 +1,59 @@
 
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import Cookies from "universal-cookie";
 import api from "../axios/api";
 
-
-
-const useAuth = () => {
+export const checkAuth = async () => {
     const cookie = new Cookies();
-    const navigate = useNavigate();
     const token = cookie.get("accessToken");
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    const handleAuth = async () => {
-        try {
-            await api.get("/user", {
+    try {
+        if (token) {
+            const response = await api.get("/user", {
                 headers: {
-                    authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`,
                 },
             });
-            if (token !== undefined || token !== null) {
-                setIsLoggedIn(true);
-            }
-        } catch (error) {
-            if (error.response.status === 401) {
-                cookie.remove("accessToken");
-                cookie.remove("id");
-                window.alert('로그인부터 하세요');
-                navigate('/login');
-            }
+            return true;
+        } else {
+            return false;
         }
-    } 
-    
+    } catch (error) {
+        console.error("checkAuth 에러: ", error);
+        throw error;
+    }
+};
+
+const useAuth = () => {
+    const navigate = useNavigate();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        const fetchAuthStatus = async () => {
+            try {
+                const isAuthenticated = await checkAuth();
+                setIsLoggedIn(isAuthenticated);
+                if (!isAuthenticated) {
+                    navigate("/login");
+                }
+            } catch (error) {
+                console.error("useAuth 에러: ", error);
+                if (error.response && error.response.status === 401) {
+                    const cookie = new Cookies();
+                    cookie.remove("accessToken");
+                    cookie.remove("id");
+                    window.alert("로그인부터 하세요");
+                    navigate("/login");
+                }
+            }
+        };
+
+        fetchAuthStatus();
+    }, [navigate]);
+
     return isLoggedIn;
-}
+
+};
 
 export default useAuth;

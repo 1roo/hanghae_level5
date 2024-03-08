@@ -2,20 +2,20 @@ import { useNavigate } from "react-router-dom";
 import useLogin from "../hooks/useLogin";
 import styled from "styled-components";
 import { useEffect } from "react";
-import Cookies from "universal-cookie";
+import useAuth from "../hooks/useAuth";
 
 const Login = () => {
-  const cookie = new Cookies();
   const navigate = useNavigate();
   const { user, loginHandler, changeHandler } = useLogin();
+  const isLoggedIn = useAuth();
 
-  useEffect(() => {
-    const token = cookie.get("accessToken");
-    if (token) {
-      window.alert('이미 로그인 상태입니다.')
-      navigate("/");
+
+    if (isLoggedIn) {
+      alert('이미 로그인 하셨습니다.');
+      window.location.href = "/";
     }
-  }, [navigate]);
+
+  
 
   return (
     <Container>

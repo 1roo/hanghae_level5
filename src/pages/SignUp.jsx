@@ -3,47 +3,49 @@ import { useNavigate } from 'react-router-dom'
 import useSignUp from '../hooks/useSignUp';
 import styled from 'styled-components';
 import Cookies from "universal-cookie";
+import useAuth from '../hooks/useAuth';
 
 const SignUp = () => {
-    const cookie = new Cookies();
-    const navigate = useNavigate();
-    const { user, changeHandler, signUpHandler } = useSignUp();
+  const cookie = new Cookies();
+  const navigate = useNavigate();
+  const { user, changeHandler, signUpHandler } = useSignUp();
+  const isLoggedIn = useAuth();
+
+  
+  if (isLoggedIn) {
+    alert('이미 로그인 하셨습니다.');
+    window.location.href = "/";
+  }
 
 
-    useEffect(() => {
-        const token = cookie.get("accessToken");
-        if (token) {
-            window.alert('이미 로그인 상태입니다.')
-            navigate("/");
-        }
-    }, [navigate]);
-    return (
-        <Container>
-            <h1>회원가입</h1>
 
-            <StyledForm onSubmit={(e) => signUpHandler(e, user)}>
-                <StyledLabel>아이디</StyledLabel>
-                <StyledInput type="text"
-                    name='id'
-                    value={user.id}
-                    onChange={changeHandler} />
+  return (
+    <Container>
+      <h1>회원가입</h1>
 
-                <StyledLabel>비밀번호</StyledLabel>
-                <StyledInput type="password"
-                    name='password'
-                    value={user.password}
-                    onChange={changeHandler} />
-                <Buttons>
-                    <Button>회원가입</Button>
-                    <Button
-                        type="button"
-                        onClick={() => {
-                            navigate("/login");
-                        }}>로그인하기</Button>
-                </Buttons>
-            </StyledForm>
-        </Container>
-    )
+      <StyledForm onSubmit={(e) => signUpHandler(e, user)}>
+        <StyledLabel>아이디</StyledLabel>
+        <StyledInput type="text"
+          name='id'
+          value={user.id}
+          onChange={changeHandler} />
+
+        <StyledLabel>비밀번호</StyledLabel>
+        <StyledInput type="password"
+          name='password'
+          value={user.password}
+          onChange={changeHandler} />
+        <Buttons>
+          <Button>회원가입</Button>
+          <Button
+            type="button"
+            onClick={() => {
+              navigate("/login");
+            }}>로그인하기</Button>
+        </Buttons>
+      </StyledForm>
+    </Container>
+  )
 }
 
 export default SignUp;
