@@ -22,7 +22,7 @@ const Home = () => {
     <>
       <div>
         <div>
-          <h1>무엇을 할까요?</h1>
+          <h1 style={{ textAlign: 'center' }}>무엇을 할까요?</h1>
           <StyledDiv
             onClick={() => {
               navigate("/quiz");
@@ -54,4 +54,7 @@ const StyledDiv = styled.div`
   padding: 30px;
   cursor: pointer;
 
+&:hover {
+  background-color: #80808018;
+}
 `

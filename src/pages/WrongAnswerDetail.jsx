@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { deleteAnswer } from '../redux/modules/quizSlice'
 import { checkAuth } from "../hooks/useAuth";
+import Comments from '../components/Comments';
+import Button from "../shared/Button";
+import styled from 'styled-components';
 
 const WrongAnswerDetail = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { id } = useParams();
-    const wrongAnswers = useSelector(state => state.quiz.wrongAnswers);
-    const wrongAnswer = wrongAnswers.find(answer => answer.id === parseInt(id));
-    const [comment, setComment] = useState('');
-    const [comments, setComments] = useState([]);
+    const { quizId } = useParams();
+    const wrongAnswers = useSelector(state => state.quizzes.wrongAnswers);
+    const wrongAnswer = wrongAnswers.find(wrongAnswer => parseInt(wrongAnswer.quizId) === parseInt(quizId));
+    console.log('quizIDPARAM: ', quizId);
+    console.log('wrongAnswer: ', wrongAnswer);
 
     useEffect(() => {
         checkAuth().then(isLoggedIn => {
@@ -23,38 +26,25 @@ const WrongAnswerDetail = () => {
     }, [navigate]);
 
 
-    const handleCommentChange = (event) => {
-        setComment(event.target.value);
-    };
-
-    const handleCommentSubmit = (event) => {
-        event.preventDefault();
-        setComments([...comments, comment]);
-        setComment('');
-    };
-
-
     return (
         <div>
-            <h1>틀린 문제 상세 정보</h1>
+            <h1 style={{ textAlign: 'center' }}>틀린 문제 상세 정보</h1>
             {wrongAnswer && (
                 <div>
-                    <p>{wrongAnswer.num1} {wrongAnswer.operator} {wrongAnswer.num2} = ? (입력한 답: {wrongAnswer.userAnswer})</p>
+                    <StyledDiv>
+                        <StyledSpan>{wrongAnswer.num1} {wrongAnswer.operator} {wrongAnswer.num2} = ? (입력한 답: {wrongAnswer.userAnswer})</StyledSpan>
+                        <Buttons>
+                            <Button size='small'
+                                value={wrongAnswer.quizId}
+                                onClick={(e) => dispatch(deleteAnswer(e.target.value))}>삭제</Button>
+                            <Button size='small'
+                                onClick={() => {
+                                    navigate('/wrongAnswers')
+                                }}>이전으로</Button>
+                        </Buttons>
+                    </StyledDiv>
                     <h2>댓글</h2>
-                    <form onSubmit={handleCommentSubmit}>
-                        <textarea value={comment} onChange={handleCommentChange} placeholder="댓글을 입력하세요" />
-                        <button type="submit">댓글 작성</button>
-                    </form>
-                    <button
-                        value={wrongAnswer.id}
-                        onClick={(e) => dispatch(deleteAnswer(e.target.value))}>삭제</button>
-                    <div>
-                        {comments.map((comment, index) => (
-                            <div key={index}>
-                                <p>{comment}</p>
-                            </div>
-                        ))}
-                    </div>
+                    <Comments quizId={wrongAnswer.quizId} />
                 </div>
             )}
             {!wrongAnswer && <p>틀린 문제를 찾을 수 없습니다.</p>}
@@ -63,3 +53,28 @@ const WrongAnswerDetail = () => {
 };
 
 export default WrongAnswerDetail;
+
+const StyledSpan = styled.span`
+  margin: 10px 0;
+  font-size: 1.2em;
+  cursor: pointer;
+  font-weight: 500;
+`
+
+const StyledDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+`
+
+const Buttons = styled.div`
+  margin-left: 20px;
+  display: flex;
+  justify-content: center;
+
+  Button {
+    margin-right: 5px;
+  }
+
+`

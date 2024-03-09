@@ -1,12 +1,11 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import useSignUp from '../hooks/useSignUp';
 import styled from 'styled-components';
-import Cookies from "universal-cookie";
 import useAuth from '../hooks/useAuth';
+import Button from "../shared/Button";
 
 const SignUp = () => {
-  const cookie = new Cookies();
   const navigate = useNavigate();
   const { user, changeHandler, signUpHandler } = useSignUp();
   const isLoggedIn = useAuth();
@@ -14,14 +13,13 @@ const SignUp = () => {
   
   if (isLoggedIn) {
     alert('이미 로그인 하셨습니다.');
-    window.location.href = "/";
+    navigate('/');
+    return null;
   }
-
-
 
   return (
     <Container>
-      <h1>회원가입</h1>
+      <h1 style={{ textAlign: 'center' }}>로그인</h1>
 
       <StyledForm onSubmit={(e) => signUpHandler(e, user)}>
         <StyledLabel>아이디</StyledLabel>
@@ -36,7 +34,7 @@ const SignUp = () => {
           value={user.password}
           onChange={changeHandler} />
         <Buttons>
-          <Button>회원가입</Button>
+          <Button type='submit'>회원가입</Button>
           <Button
             type="button"
             onClick={() => {
@@ -86,20 +84,5 @@ const Buttons = styled.div`
   }
   Button:first-child {
     margin-right: 10px;
-  }
-`
-
-const Button = styled.button`
-  border: 1px solid #191970;
-  height: 30px;
-  border-radius: 5px;
-  background-color: #191970;
-  color: white;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #19197021;
-    color: #191970;
-    font-weight: 600;
   }
 `

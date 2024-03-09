@@ -1,5 +1,5 @@
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import Cookies from "universal-cookie";
 import api from "../axios/api";
@@ -34,9 +34,7 @@ const useAuth = () => {
             try {
                 const isAuthenticated = await checkAuth();
                 setIsLoggedIn(isAuthenticated);
-                if (!isAuthenticated) {
-                    navigate("/login");
-                }
+                
             } catch (error) {
                 console.error("useAuth 에러: ", error);
                 if (error.response && error.response.status === 401) {

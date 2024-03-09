@@ -18,7 +18,7 @@ const Router = () => {
                 <Route path='/signUp' element={<SignUp />} />
                 <Route path='/quiz' element={<Quiz />} />
                 <Route path='/wrongAnswers' element={<WrongAnswers />} />
-                <Route path="/wrongAnswers/:id" element={<WrongAnswerDetail />} />
+                <Route path="/wrongAnswers/:quizId" element={<WrongAnswerDetail />} />
 
             </Routes>
         </BrowserRouter>

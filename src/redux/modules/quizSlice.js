@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import api2 from '../../axios/api2';
 
-let nextId = 1;
+let nextId = parseInt(localStorage.getItem('nextId'), 10) || 1;
 
 const initialState = {
   num1: 0,
   num2: 0,
-  operator: '+',
+  operator: '',
   userAnswer: 0,
   correctAnswer: 0,
   wrongAnswers: [],
@@ -14,7 +14,7 @@ const initialState = {
 
 const quizSlice = createSlice({
 
-  name: 'quiz',
+  name: 'quizzes',
   initialState,
   reducers: {
     randomNumbers(state) {
@@ -37,23 +37,21 @@ const quizSlice = createSlice({
       };
     },
     checkAnswer(state) {
-      let answer;
-      switch (state.operator) {
-        case '+':
-          answer = state.num1 + state.num2;
-          break;
-        case '-':
-          answer = state.num1 - state.num2;
-          break;
-        case '*':
-          answer = state.num1 * state.num2;
-          break;
-        case '/':
-          answer = Math.floor(state.num1 / state.num2);
-          break;
-        default:
-          answer = '';
-      }
+      const answer = (() => {
+        switch (state.operator) {
+          case '+':
+            return state.num1 + state.num2;
+          case '-':
+            return state.num1 - state.num2;
+          case '*':
+            return state.num1 * state.num2;
+          case '/':
+            return Math.floor(state.num1 / state.num2);
+          default:
+            return '';
+        }
+      })();
+
       let updatedState = {
         ...state,
         correctAnswer: answer,
@@ -61,26 +59,32 @@ const quizSlice = createSlice({
 
       if (state.userAnswer !== answer) {
         const newWrongAnswer = {
-          id: nextId++,
+          quizId: nextId,
           num1: state.num1,
           operator: state.operator,
           num2: state.num2,
           userAnswer: state.userAnswer,
-          correctAnswer: answer
+          correctAnswer: answer,
         };
+
         updatedState = {
           ...updatedState,
           wrongAnswers: [...state.wrongAnswers, newWrongAnswer]
         };
 
         api2.post('/wrongAnswers', newWrongAnswer)
-          .then(response => console.log('퀴즈 데이터가 성공적으로 전송되었습니다.', response.data))
+          .then(response => {
+            console.log('퀴즈 데이터가 성공적으로 전송되었습니다.', response.data)
+            nextId++;
+            localStorage.setItem('nextId', nextId);
+          })
           .catch(error => console.error('퀴즈 데이터를 JSON 서버에 전송하는 도중 에러가 발생했습니다.', error));
       }
-      console.log('updatedState: ', updatedState);
+
       return updatedState;
     },
   },
+  
 });
 
 export const { randomNumbers, randomOperator, setUserAnswer, checkAnswer, deleteAnswer } = quizSlice.actions;

@@ -1,25 +1,25 @@
 import { useNavigate } from "react-router-dom";
 import useLogin from "../hooks/useLogin";
 import styled from "styled-components";
-import { useEffect } from "react";
 import useAuth from "../hooks/useAuth";
+import Button from "../shared/Button";
 
 const Login = () => {
   const navigate = useNavigate();
   const { user, loginHandler, changeHandler } = useLogin();
   const isLoggedIn = useAuth();
 
-
     if (isLoggedIn) {
       alert('이미 로그인 하셨습니다.');
-      window.location.href = "/";
+      navigate('/');
+      return null;
     }
 
   
 
   return (
     <Container>
-      <h1>로그인</h1>
+      <h1 style={{ textAlign: 'center' }}>로그인</h1>
 
       <StyledForm onSubmit={(e) => loginHandler(e, user)}>
         <StyledLabel>아이디</StyledLabel>
@@ -34,8 +34,8 @@ const Login = () => {
           value={user.password}
           onChange={changeHandler} />
         <Buttons>
-          <Button type="submit">로그인</Button>
-          <Button
+          <Button size = 'large' type="submit">로그인</Button>
+          <Button size = 'large'
             type="button"
             onClick={() => {
               navigate("/signUp");
@@ -76,9 +76,13 @@ const StyledLabel = styled.label`
 `
 
 const Buttons = styled.div`
+  width: 800px;
   margin-top: 10px;
   display: flex;
   justify-content: center;
+  align-content: space-between
+
+  
 
   Button {
     flex: 1;
@@ -88,17 +92,3 @@ const Buttons = styled.div`
   }
 `
 
-const Button = styled.button`
-  border: 1px solid #191970;
-  height: 30px;
-  border-radius: 5px;
-  background-color: #191970;
-  color: white;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #19197021;
-    color: #191970;
-    font-weight: 600;
-  }
-`

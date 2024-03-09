@@ -1,12 +1,15 @@
-import logo from './logo.svg';
 import './App.css';
 import Router from './shared/Router';
+import { QueryClientProvider, QueryClient } from "react-query";
 
-function App() {
+
+
+const App = () => {
+  const queryClient = new QueryClient();
   return (
-    <div className="App">
+    <QueryClientProvider client={queryClient}>
       <Router />
-    </div>
+    </QueryClientProvider>
   );
 }
 
