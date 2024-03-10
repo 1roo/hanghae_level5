@@ -30,7 +30,7 @@ const Quiz = () => {
 
 
     const makeQuiz = () => {
-        console.log('퀴즈만들어짐요');
+        // console.log('퀴즈만들어짐요');
         dispatch(randomNumbers());
         dispatch(randomOperator());
         setIsSubmitted(false);
@@ -38,66 +38,72 @@ const Quiz = () => {
     }
 
     const handleSubmit = () => {
-        dispatch(setUserAnswer(parseInt(inputValue, 10)));
+        if (!isNaN(inputValue)) {
+            dispatch(setUserAnswer(parseInt(inputValue, 10)));
+        } else {
+            dispatch(setUserAnswer(0));
+        }
         setIsSubmitted(true);
         console.log('Submitted - Current State:', { num1, num2, operator, userAnswer, correctAnswer });
     }
 
-    const handleToNext = () => {
-        if (isSubmitted) {
-            setInputValue('');
-            makeQuiz();
-        } else {
-            handleSubmit();
-        }
+
+const handleToNext = () => {
+    if (isSubmitted) {
+        setInputValue('');
+        makeQuiz();
+    } else {
+        handleSubmit();
     }
+}
 
-    useEffect(() => {
-        if (isSubmitted) {
-            dispatch(checkAnswer());
-            console.log('After checkAnswer() - Current State:', { num1, num2, operator, userAnswer, correctAnswer });
-        }
-    }, [isSubmitted, dispatch]);
+useEffect(() => {
+    if (isSubmitted) {
+        dispatch(checkAnswer());
+        console.log('After checkAnswer() - Current State:', { num1, num2, operator, userAnswer, correctAnswer });
+    }
+}, [isSubmitted, dispatch]);
 
 
-    return (
-        <>
+return (
+    <>
+        <div>
+            <h1 style={{ textAlign: 'center', marginBottom: '0px' }}>사칙연산 퀴즈</h1>
+            <p style={{ textAlign: 'center', marginTop: '0px' }}>(나누기는 몫만 입력해주세요.)</p>
             <div>
-                <h1 style={{ textAlign: 'center' }}>사칙연산 퀴즈</h1>
-                <div>
-                    <StyledP>{num1} {operator} {num2}</StyledP>
-                    <StyledDiv>
-                        <StyledInput
-                            type="text"
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
-                            disabled={isSubmitted}
-                        />
-                        {!isSubmitted && (
-                            <Button onClick={handleSubmit}>제출</Button>
-                        )}
-                    </StyledDiv>
-                    <StyledDiv style={{ marginTop: '10px' }}>
-                        {isSubmitted && (
-                            <>
-                                <p>{userAnswer === correctAnswer ? '정답입니다!' : '틀렸습니다!'}</p>
+                <StyledP>{num1} {operator} {num2}</StyledP>
+                <StyledDiv>
+                    <StyledInput
+                        type="text"
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        disabled={isSubmitted}
+                    />
+                    {!isSubmitted && (
+                        <Button onClick={handleSubmit}>제출</Button>
+                    )}
+                </StyledDiv>
+                <StyledDiv style={{ marginTop: '10px' }}>
+                    {isSubmitted && (
+                        <>
+                            <p>{userAnswer === correctAnswer ? '정답입니다!' : '틀렸습니다!'}</p>
 
-                                <p>정답: {correctAnswer}</p>
-                            </>
-                        )}
-                    </StyledDiv>
+                            <p>정답: {correctAnswer}</p>
+                        </>
+                    )}
+                </StyledDiv>
 
-                    <StyledDiv style={{ marginTop: '10px' }}>
-                        <Buttons>
-                            <Button onClick={handleToNext}>다음</Button>
-                            <Button onClick={() => navigate("/")}>이전으로</Button>
-                        </Buttons>
-                    </StyledDiv>
-                </div>
+                <StyledDiv style={{ marginTop: '10px' }}>
+                    <Buttons>
+                        <Button onClick={handleToNext}>다음</Button>
+                        <Button onClick={() => navigate("/")}>이전으로</Button>
+                    </Buttons>
+                </StyledDiv>
             </div>
+        </div>
 
-        </>
-    )
+    </>
+)
 }
 
 export default Quiz

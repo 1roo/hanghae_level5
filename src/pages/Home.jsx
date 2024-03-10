@@ -43,7 +43,7 @@ const Home = () => {
 export default Home;
 
 const StyledDiv = styled.div`
-  width: 80%;
+  width: 800px;
   height: 50px;
   border: 1px solid black;
   border-radius: 5px;

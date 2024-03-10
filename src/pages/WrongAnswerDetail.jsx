@@ -43,7 +43,7 @@ const WrongAnswerDetail = () => {
                                 }}>이전으로</Button>
                         </Buttons>
                     </StyledDiv>
-                    <h2>댓글</h2>
+                    <h2 style={{ textAlign: 'center' }}>댓글</h2>
                     <Comments quizId={wrongAnswer.quizId} />
                 </div>
             )}

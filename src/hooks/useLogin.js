@@ -32,8 +32,8 @@ const useLogin = () => {
             try {
                 const { data } = await api.post("/login", user);
     
-                cookie.set("accessToken", data.token, { path: "/", maxAge: 600 });
-                cookie.set("id", jwtDecode(data.token).id, { path: "/", maxAge: 600 });
+                cookie.set("accessToken", data.token, { path: "/", maxAge: 3600 });
+                cookie.set("id", jwtDecode(data.token).id, { path: "/", maxAge: 3600 });
                 navigate("/")
                 console.log('useLogin,login성공');
                 console.log('token: ', cookie.get("accessToken"));

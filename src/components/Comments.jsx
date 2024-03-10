@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import api2 from "../axios/api2";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useParams } from "react-router";
+import Button from "../shared/Button";
+import styled from 'styled-components';
 
 const Comments = () => {
     const { quizId } = useParams();
@@ -79,30 +81,28 @@ const Comments = () => {
     if (isError) return <div>댓글 가져오다 오류 발생</div>;
 
     return (
-        <div>
-            <h1>Comments</h1>
-            {comments.map((comment) => (
-                <div key={comment.id}>
-                    {editingCommentId === comment.id ? (
-                        <>
-                            <input
-                                type="text"
-                                value={editedCommentContent}
-                                onChange={(e) => setEditedCommentContent(e.target.value)}
-                            />
-                            <button onClick={finishEditing}>완료</button>
-                        </>
-                    ) : (
-                        <>
-                            <p>{comment.content}</p>
-                            <button onClick={() => deleteComment(comment.id)}>Delete</button>
-                            <button onClick={() => startEditing(comment)}>Update</button>
-                        </>
-                    )}
-                </div>
-            ))}
-            {/* 댓글 등록 폼 */}
-            <form
+        <Container>
+                {comments.map((comment) => (
+                    <div key={comment.id}>
+                        {editingCommentId === comment.id ? (
+                            <StyledDiv>
+                                <input style={{ width: '800px' }}                                      
+                                    type="text"
+                                    value={editedCommentContent}
+                                    onChange={(e) => setEditedCommentContent(e.target.value)}
+                                />
+                                <Button onClick={finishEditing}>완료</Button>
+                            </StyledDiv>
+                        ) : (
+                            <StyledDiv>
+                                <p>{comment.content}</p>
+                                <Button size='small' onClick={() => startEditing(comment)}>수정</Button>
+                                <Button size='small' onClick={() => deleteComment(comment.id)}>삭제</Button>
+                            </StyledDiv>
+                        )}
+                    </div>
+                ))}
+            <StyledFomm
                 onSubmit={(e) => {
                     e.preventDefault();
                     const content = e.target.elements.content.value;
@@ -110,11 +110,40 @@ const Comments = () => {
                     e.target.reset();
                 }}
             >
-                <input type="text" name="content" placeholder="Enter comment" />
-                <button type="submit">Add Comment</button>
-            </form>
-        </div>
+                <input type="text" name="content" placeholder="댓글을 적어보세요" />
+                <Button type="submit">등록</Button>
+            </StyledFomm>
+        </Container>
     );
 };
 
 export default Comments;
+
+const Container = styled.div`
+    width: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+`
+
+const StyledFomm = styled.form`
+    display: flex;
+    width: 800px;
+
+    input {
+        width: 800px;
+    }
+`
+
+const StyledDiv = styled.div`
+    display: flex;
+    width: 800px;
+    align-items: center;
+    p {
+        width: 800px;
+    }
+`
