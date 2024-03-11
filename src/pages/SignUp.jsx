@@ -19,7 +19,7 @@ const SignUp = () => {
 
   return (
     <Container>
-      <h1 style={{ textAlign: 'center' }}>로그인</h1>
+      <h1 style={{ textAlign: 'center' }}>회원가입</h1>
 
       <StyledForm onSubmit={(e) => signUpHandler(e, user)}>
         <StyledLabel>아이디</StyledLabel>
