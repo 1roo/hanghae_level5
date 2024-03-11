@@ -1,56 +1,19 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import api from '../axios/api';
+import { useMutation } from 'react-query';
+import api2 from '../axios/api2';
 
 const useSignUp = () => {
+    const signUpMutation = useMutation((userData) => api2.post("/register", userData));
 
-    const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(false);
-    const [isError, setIsError] = useState(false);
-    const [error, setError] = useState(null);
-    const [user, setUser] = useState({
-        id: "",
-        password: "",
-    })
-
-
-    
-
-
-    const signUpHandler = async (e, user) => {
-        e.preventDefault();
-        
-        const isIdEmpty = user.id === "";
-        const isPwEmpty = user.password === "";
-
-        if (!isIdEmpty && !isPwEmpty) {
-            setIsLoading(true);
-
-            try {
-                await api.post("/register", user);
-                window.alert('회원가입에 성공하였습니다.');
-                navigate("/login");
-            } catch (error) {
-                setIsError(true);
-                setError(error.response.data.message);
-                window.alert(error.response.data.message);
-            } finally {
-                setIsLoading(false);
-            }
-
-        } else {
-            window.alert('아이디와 비밀번호를 모두 입력하세요.');
+    const signUpHandler = async (userData) => {
+        try {
+            await signUpMutation.mutateAsync(userData);
+            alert('회원가입에 성공했습니다.');
+        } catch (error) {
+            alert('회원가입에 실패했습니다. 오류 메시지: ' + error.message);
         }
-    }
+    };
 
-    const changeHandler = (e) => {
-        const { name, value } = e.target;
-        setUser((user) => ({ ...user, [name]: value }))
-    }
+    return { signUpHandler, isLoading: signUpMutation.isLoading };
+};
 
-
-
-    return { user, isLoading, signUpHandler, changeHandler, }
-}
-
-export default useSignUp
+export default useSignUp;

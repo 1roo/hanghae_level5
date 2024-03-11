@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useSignUp from '../hooks/useSignUp';
 import styled from 'styled-components';
@@ -7,34 +7,45 @@ import Button from "../shared/Button";
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const { user, changeHandler, signUpHandler } = useSignUp();
+  const { signUpHandler, isLoading } = useSignUp();
   const isLoggedIn = useAuth();
+  const [newUser, setNewUser] = useState({ id: '', password: '' });
 
-  
   if (isLoggedIn) {
     alert('이미 로그인 하셨습니다.');
     navigate('/');
     return null;
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const { id, password } = newUser;
+    if (!id || !password) {
+      alert('아이디와 비밀번호를 모두 입력하세요.');
+      return;
+    }
+    signUpHandler(newUser);
+    setNewUser({ id: '', password: '' });
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setNewUser({ ...newUser, [name]: value });
+  };
+
   return (
     <Container>
       <h1 style={{ textAlign: 'center' }}>회원가입</h1>
 
-      <StyledForm onSubmit={(e) => signUpHandler(e, user)}>
+      <StyledForm onSubmit={handleSubmit}>
         <StyledLabel>아이디</StyledLabel>
-        <StyledInput type="text"
-          name='id'
-          value={user.id}
-          onChange={changeHandler} />
+        <StyledInput type="text" name='id' value={newUser.id} onChange={handleChange} required />
 
         <StyledLabel>비밀번호</StyledLabel>
-        <StyledInput type="password"
-          name='password'
-          value={user.password}
-          onChange={changeHandler} />
+        <StyledInput type="password" name='password' value={newUser.password} onChange={handleChange} required />
+
         <Buttons>
-          <Button type='submit'>회원가입</Button>
+          <Button type='submit' disabled={isLoading}>회원가입</Button>
           <Button
             type="button"
             onClick={() => {
@@ -43,8 +54,8 @@ const SignUp = () => {
         </Buttons>
       </StyledForm>
     </Container>
-  )
-}
+  );
+};
 
 export default SignUp;
 
