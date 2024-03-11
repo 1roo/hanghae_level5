@@ -73,7 +73,7 @@ const Comments = () => {
         try {
             await deleteCommentMutation.mutateAsync(quizId);
         } catch (error) {
-            console.error("Failed to delete comment:", error);
+            console.error("댓글삭제에 실패했습니다.");
         }
     };
 
