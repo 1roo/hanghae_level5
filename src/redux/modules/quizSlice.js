@@ -29,13 +29,7 @@ const quizSlice = createSlice({
       state.userAnswer = action.payload;
     },
     deleteAnswer(state, action) {
-      // state.wrongAnswers = state.wrongAnswers.filter(answer => answer.id !== action.payload);
-      state.wrongAnswers = state.wrongAnswers.reduce((result, answer) => {
-        if (answer.id !== action.payload) {
-          result.push(answer);
-        }
-        return result;
-      }, []);
+      state.wrongAnswers = state.wrongAnswers.filter(answer => answer.quizId !== action.payload);
     },
     checkAnswer(state) {
       const answer = (() => {
