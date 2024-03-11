@@ -6,6 +6,8 @@ import { checkAuth } from "../hooks/useAuth";
 import Comments from '../components/Comments';
 import Button from "../shared/Button";
 import styled from 'styled-components';
+import { useMutation, useQueryClient } from 'react-query';
+import api from '../axios/api';
 
 const WrongAnswerDetail = () => {
     const dispatch = useDispatch();
@@ -13,6 +15,7 @@ const WrongAnswerDetail = () => {
     const { quizId } = useParams();
     const wrongAnswers = useSelector(state => state.quizzes.wrongAnswers);
     const wrongAnswer = wrongAnswers.find(wrongAnswer => parseInt(wrongAnswer.quizId) === parseInt(quizId));
+    const queryClient = useQueryClient();
     // console.log('quizIDPARAM: ', quizId);
     // console.log('wrongAnswer: ', wrongAnswer);
 
@@ -25,9 +28,25 @@ const WrongAnswerDetail = () => {
         });
     }, [navigate]);
 
-    const handleDeleteAnswer = async (quizId) => {
-        await dispatch(deleteAnswer(quizId));
-        navigate('/wrongAnswers');
+    // const handleDeleteAnswer = async (quizId) => {
+    //     await dispatch(deleteAnswer(quizId));
+    //     navigate('/wrongAnswers');
+    // };
+
+    //quiz삭제
+    const deleteCommentMutation = useMutation((quizId) => api.delete(`/wrongAnswers/${quizId}`), {
+        onSuccess: () => {
+            queryClient.invalidateQueries(["comments", quizId]);
+        },
+    });
+
+    const deleteQuiz = async (quizId) => {
+        try {
+            await deleteCommentMutation.mutateAsync(quizId);
+            navigate('/wrongAnswers');
+        } catch (error) {
+            console.error("퀴즈삭제에 실패했습니다.");
+        }
     };
 
 
@@ -41,7 +60,7 @@ const WrongAnswerDetail = () => {
                         <Buttons>
                             <Button size='small'
                                 value={wrongAnswer.quizId}
-                                onClick={() => handleDeleteAnswer(wrongAnswer.quizId)}>삭제</Button>
+                                onClick={() => deleteQuiz(wrongAnswer.quizId)}>삭제</Button>
                             <Button size='small'
                                 onClick={() => {
                                     navigate('/wrongAnswers')

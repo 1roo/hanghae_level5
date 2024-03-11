@@ -69,7 +69,7 @@ const quizSlice = createSlice({
 
         api2.post('/wrongAnswers', newWrongAnswer)
           .then(response => {
-            console.log('퀴즈 데이터가 성공적으로 전송되었습니다.', response.data)
+            // console.log('퀴즈 데이터가 성공적으로 전송되었습니다.', response.data)
             nextId++;
             localStorage.setItem('nextId', nextId);
           })

@@ -44,7 +44,7 @@ const Quiz = () => {
             dispatch(setUserAnswer(0));
         }
         setIsSubmitted(true);
-        console.log('Submitted - Current State:', { num1, num2, operator, userAnswer, correctAnswer });
+        // console.log('Submitted - Current State:', { num1, num2, operator, userAnswer, correctAnswer });
     }
 
 
@@ -60,7 +60,7 @@ const handleToNext = () => {
 useEffect(() => {
     if (isSubmitted) {
         dispatch(checkAnswer());
-        console.log('After checkAnswer() - Current State:', { num1, num2, operator, userAnswer, correctAnswer });
+        // console.log('After checkAnswer() - Current State:', { num1, num2, operator, userAnswer, correctAnswer });
     }
 }, [isSubmitted, dispatch]);
 
