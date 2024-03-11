@@ -36,7 +36,7 @@ const WrongAnswerDetail = () => {
     //quiz삭제
     const deleteQuizMutation = useMutation((quizId) => api2.delete(`/wrongAnswers/${quizId}`), {
         onSuccess: () => {
-            queryClient.invalidateQueries(["comments", quizId]);
+            queryClient.invalidateQueries(["wrongAnswers", quizId]);
         },
     });
 
