@@ -26,4 +26,10 @@ export const deleteComment = async (id) => {
 };
 
 
+export const deleteQuiz = async (id) => {
+    const response = await api2.delete(`/wrongAnswers/${id}`);
+    return response.data;
+};
+
+
 export default api2;

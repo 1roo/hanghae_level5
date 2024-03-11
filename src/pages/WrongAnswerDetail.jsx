@@ -7,7 +7,7 @@ import Comments from '../components/Comments';
 import Button from "../shared/Button";
 import styled from 'styled-components';
 import { useMutation, useQueryClient } from 'react-query';
-import api from '../axios/api';
+import api2 from '../axios/api2';
 
 const WrongAnswerDetail = () => {
     const dispatch = useDispatch();
@@ -34,7 +34,7 @@ const WrongAnswerDetail = () => {
     // };
 
     //quiz삭제
-    const deleteCommentMutation = useMutation((quizId) => api.delete(`/wrongAnswers/${quizId}`), {
+    const deleteQuizMutation = useMutation((quizId) => api2.delete(`/wrongAnswers/${quizId}`), {
         onSuccess: () => {
             queryClient.invalidateQueries(["comments", quizId]);
         },
@@ -42,7 +42,7 @@ const WrongAnswerDetail = () => {
 
     const deleteQuiz = async (quizId) => {
         try {
-            await deleteCommentMutation.mutateAsync(quizId);
+            await deleteQuizMutation.mutateAsync(quizId);
             navigate('/wrongAnswers');
         } catch (error) {
             console.error("퀴즈삭제에 실패했습니다.");

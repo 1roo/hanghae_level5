@@ -13,10 +13,6 @@ const api = axios.create({
     }
 })
 
-export const deleteQuiz = async (id) => {
-    const response = await api.delete(`/wrongAnswers/${id}`);
-    return response.data;
-};
 
 
 

@@ -28,9 +28,9 @@ const quizSlice = createSlice({
     setUserAnswer(state, action) {
       state.userAnswer = action.payload;
     },
-    deleteAnswer(state, action) {
-      state.wrongAnswers = state.wrongAnswers.filter(answer => answer.id !== action.payload);
-    },
+    // deleteAnswer(state, action) {
+    //   state.wrongAnswers = state.wrongAnswers.filter(answer => answer.id !== action.payload);
+    // },
     checkAnswer(state) {
       const answer = (() => {
         switch (state.operator) {
