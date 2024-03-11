@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 const api2 = axios.create({
-    baseURL: "http://localhost:3001",
+    baseURL: process.env.REACT_APP_JSON_URL,
 })
 
 export const getComments = async (quizId) => {
