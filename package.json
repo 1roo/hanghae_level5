@@ -1,5 +1,5 @@
 {
-  "name": "level4",
+  "name": "level5",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -50,7 +50,7 @@
     ]
   },
   "devDependencies": {
-    "json-server": "^1.0.0-alpha.23",
+    "json-server": "0.17.4",
     "json-server-auth": "^2.1.0"
   }
 }
