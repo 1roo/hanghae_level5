@@ -28,8 +28,8 @@ const WrongAnswerDetail = () => {
         });
     }, [navigate]);
 
-    const handleDeleteAnswer = async (quizId) => {
-        await dispatch(deleteAnswer(quizId));
+    const handleDeleteAnswer = (quizId) => {
+        dispatch(deleteAnswer(quizId));
         navigate('/wrongAnswers');
     };
 
