@@ -1,8 +1,8 @@
 import { useMutation } from 'react-query';
-import api2 from '../axios/api2';
+import api from '../axios/api';
 
 const useSignUp = () => {
-    const signUpMutation = useMutation((userData) => api2.post("/register", userData));
+    const signUpMutation = useMutation((userData) => api.post("/register", userData));
 
     const signUpHandler = async (userData) => {
         try {
