@@ -11,7 +11,7 @@ const WrongAnswers = () => {
     useEffect(() => {
         checkAuth().then(isLoggedIn => {
             if (!isLoggedIn) {
-                alert('오답노트 로그인은 필수입니다.');
+                alert('로그인은 필수입니다.');
                 navigate("/login");
             }
         });

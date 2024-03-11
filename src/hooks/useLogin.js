@@ -35,8 +35,8 @@ const useLogin = () => {
                 cookie.set("accessToken", data.token, { path: "/", maxAge: 3600 });
                 cookie.set("id", jwtDecode(data.token).id, { path: "/", maxAge: 3600 });
                 navigate("/")
-                console.log('useLogin,login성공');
-                console.log('token: ', cookie.get("accessToken"));
+                // console.log('useLogin,login성공');
+                // console.log('token: ', cookie.get("accessToken"));
             } catch (error) {
                 setIsError(true);
                 setError(error.response.data.message);

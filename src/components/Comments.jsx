@@ -50,7 +50,7 @@ const Comments = () => {
 
     const finishEditing = async () => {
         try {
-            console.log('quizIdMutaion: ', quizId);
+            // console.log('quizIdMutaion: ', quizId);
             await updateCommentMutation.mutateAsync({
                 id: editingCommentId,
                 content: editedCommentContent,
@@ -58,20 +58,20 @@ const Comments = () => {
             });
             setEditingCommentId(null);
         } catch (error) {
-            console.error("Failed to update comment:", error);
+            console.error("업데이트 도중 에러가 발생했습니다.", error);
         }
     };
 
     //댓글삭제
-    const deleteCommentMutation = useMutation((id) => api2.delete(`/comments/${id}`), {
+    const deleteCommentMutation = useMutation((quizId) => api2.delete(`/comments/${quizId}`), {
         onSuccess: () => {
             queryClient.invalidateQueries(["comments", quizId]);
         },
     });
 
-    const deleteComment = async (id) => {
+    const deleteComment = async (quizId) => {
         try {
-            await deleteCommentMutation.mutateAsync(id);
+            await deleteCommentMutation.mutateAsync(quizId);
         } catch (error) {
             console.error("Failed to delete comment:", error);
         }

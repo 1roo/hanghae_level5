@@ -20,7 +20,7 @@ export const checkAuth = async () => {
             return false;
         }
     } catch (error) {
-        console.error("checkAuth 에러: ", error);
+        // console.error("checkAuth 에러: ", error);
         throw error;
     }
 };
@@ -36,7 +36,7 @@ const useAuth = () => {
                 setIsLoggedIn(isAuthenticated);
                 
             } catch (error) {
-                console.error("useAuth 에러: ", error);
+                // console.error("useAuth 에러: ", error);
                 if (error.response && error.response.status === 401) {
                     const cookie = new Cookies();
                     cookie.remove("accessToken");

@@ -13,17 +13,22 @@ const WrongAnswerDetail = () => {
     const { quizId } = useParams();
     const wrongAnswers = useSelector(state => state.quizzes.wrongAnswers);
     const wrongAnswer = wrongAnswers.find(wrongAnswer => parseInt(wrongAnswer.quizId) === parseInt(quizId));
-    console.log('quizIDPARAM: ', quizId);
-    console.log('wrongAnswer: ', wrongAnswer);
+    // console.log('quizIDPARAM: ', quizId);
+    // console.log('wrongAnswer: ', wrongAnswer);
 
     useEffect(() => {
         checkAuth().then(isLoggedIn => {
             if (!isLoggedIn) {
-                alert('오답디테일 로그인은 필수입니다.');
+                alert('로그인은 필수입니다.');
                 navigate("/login");
             }
         });
     }, [navigate]);
+
+    const handleDeleteAnswer = (quizId) => {
+        dispatch(deleteAnswer(quizId));
+        navigate('/wrongAnswers');
+    };
 
 
     return (
@@ -36,7 +41,7 @@ const WrongAnswerDetail = () => {
                         <Buttons>
                             <Button size='small'
                                 value={wrongAnswer.quizId}
-                                onClick={(e) => dispatch(deleteAnswer(e.target.value))}>삭제</Button>
+                                onClick={() => handleDeleteAnswer(wrongAnswer.quizId)}>삭제</Button>
                             <Button size='small'
                                 onClick={() => {
                                     navigate('/wrongAnswers')
