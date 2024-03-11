@@ -14,7 +14,7 @@ const Comments = () => {
     //댓글 불러오기
     const { isLoading, isError, data: comments } = useQuery(
         ["comments", quizId],
-        () => api2.get(`/comments?quizId=${quizId}`).then((res) => res.data)
+        () => api2.get(`/comments?quizId=${quizId}`, { withCredentials: true }).then((res) => res.data)
     );
 
     //댓글등록
