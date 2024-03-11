@@ -25,8 +25,8 @@ const WrongAnswerDetail = () => {
         });
     }, [navigate]);
 
-    const handleDeleteAnswer = (quizId) => {
-        dispatch(deleteAnswer(quizId));
+    const handleDeleteAnswer = async (quizId) => {
+        await dispatch(deleteAnswer(quizId));
         navigate('/wrongAnswers');
     };
 
