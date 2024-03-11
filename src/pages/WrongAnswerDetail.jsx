@@ -28,26 +28,26 @@ const WrongAnswerDetail = () => {
         });
     }, [navigate]);
 
-    // const handleDeleteAnswer = async (quizId) => {
-    //     await dispatch(deleteAnswer(quizId));
-    //     navigate('/wrongAnswers');
-    // };
-
-    //quiz삭제
-    const deleteQuizMutation = useMutation((quizId) => api2.delete(`/wrongAnswers/${quizId}`), {
-        onSuccess: () => {
-            queryClient.invalidateQueries(["wrongAnswers", quizId]);
-        },
-    });
-
-    const deleteQuiz = async (quizId) => {
-        try {
-            await deleteQuizMutation.mutateAsync(quizId);
-            navigate('/wrongAnswers');
-        } catch (error) {
-            console.error("퀴즈삭제에 실패했습니다.");
-        }
+    const handleDeleteAnswer = async (quizId) => {
+        await dispatch(deleteAnswer(quizId));
+        navigate('/wrongAnswers');
     };
+
+    // //quiz삭제
+    // const deleteQuizMutation = useMutation((quizId) => api2.delete(`/wrongAnswers/${quizId}`), {
+    //     onSuccess: () => {
+    //         queryClient.invalidateQueries(["wrongAnswers", quizId]);
+    //     },
+    // });
+
+    // const deleteQuiz = async (quizId) => {
+    //     try {
+    //         await deleteQuizMutation.mutateAsync(quizId);
+    //         navigate('/wrongAnswers');
+    //     } catch (error) {
+    //         console.error("퀴즈삭제에 실패했습니다.");
+    //     }
+    // };
 
 
     return (
@@ -60,7 +60,7 @@ const WrongAnswerDetail = () => {
                         <Buttons>
                             <Button size='small'
                                 value={wrongAnswer.quizId}
-                                onClick={() => deleteQuiz(wrongAnswer.quizId)}>삭제</Button>
+                                onClick={() => handleDeleteAnswer(wrongAnswer.quizId)}>삭제</Button>
                             <Button size='small'
                                 onClick={() => {
                                     navigate('/wrongAnswers')
